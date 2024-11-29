@@ -1,0 +1,36 @@
+# docker-compose.yml
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    restart: always
+
+  github_actions_exporter:
+    image: observabilitystack/github-actions-exporter:latest
+    container_name: github_actions_exporter
+    ports:
+      - '9100:9100' # Exporter's metrics endpoint
+    environment:
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    restart: always
+
+volumes:
+  grafana_data:
