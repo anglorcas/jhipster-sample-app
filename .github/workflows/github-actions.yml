@@ -14,7 +14,7 @@ jobs:
       SPRING_JPA_SHOW_SQL: false
       JHI_DISABLE_WEBPACK_LOGS: true
       NG_CLI_ANALYTICS: false
-      GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }} # Use the GitHub token securely
+      GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
 
     steps:
       - uses: actions/checkout@v2
@@ -25,6 +25,10 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17.x'
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
       - name: Install node.js packages
         run: npm install
       - name: Start services for metrics collection
