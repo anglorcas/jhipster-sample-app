@@ -78,6 +78,14 @@ jobs:
         run: |
           npm run ci:frontend:test > frontend-test-output.log || true
 
+      # Debug step: Output the test logs for inspection
+      - name: Output test logs
+        run: |
+          echo "Backend test output:"
+          cat backend-test-output.log
+          echo "Frontend test output:"
+          cat frontend-test-output.log
+
       # Extract test metrics and push to Pushgateway
       - name: Extract test metrics and push to Pushgateway
         run: |
@@ -95,6 +103,10 @@ jobs:
           TOTAL_TESTS_RUN=$((BACKEND_TESTS_RUN + FRONTEND_TESTS_RUN))
           TOTAL_TESTS_FAILED=$((BACKEND_TESTS_FAILED + FRONTEND_TESTS_FAILED))
           TOTAL_TESTS_SUCCEEDED=$((TOTAL_TESTS_RUN - TOTAL_TESTS_FAILED))
+
+          # Ensure that no negative values are present (e.g., in case of parsing errors)
+          if [[ "$TOTAL_TESTS_FAILED" -lt 0 ]]; then TOTAL_TESTS_FAILED=0; fi
+          if [[ "$TOTAL_TESTS_SUCCEEDED" -lt 0 ]]; then TOTAL_TESTS_SUCCEEDED=0; fi
 
           # Create metrics file
           echo "tests_run_total $TOTAL_TESTS_RUN" > metrics.prom
@@ -121,5 +133,18 @@ jobs:
       # Stop services
       - name: Stop services
         run: |
-          docker-compose -f docker-compose.yml down
-          pkill ngrok
+          # Debugging step: Check Docker containers before stopping
+          echo "Listing Docker containers before stopping:"
+          docker ps || true  # Ignore errors if no containers are running
+
+          # Stop services and remove containers, ignore errors if no containers or network found
+          echo "Stopping and removing containers..."
+          docker-compose -f docker-compose.yml down || true  # Ignore errors if network or containers don't exist
+
+          # Ensure ngrok is killed (ignore errors if not running)
+          echo "Stopping ngrok..."
+          pkill ngrok || true
+
+          # Verify if everything was stopped (list containers after attempting to stop them)
+          echo "Listing Docker containers after stopping:"
+          docker ps || true  # This should show no containers running
