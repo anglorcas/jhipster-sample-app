@@ -15,7 +15,7 @@ jobs:
       JHI_DISABLE_WEBPACK_LOGS: true
       NG_CLI_ANALYTICS: false
       GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
-      PUSHGATEWAY_URL: http://localhost:9091
+      PUSHGATEWAY_URL: http://localhost:9091 # Default value
 
     steps:
       - uses: actions/checkout@v2
@@ -52,7 +52,15 @@ jobs:
 
           # Wait for ngrok to start and then get the public URL
           sleep 5
+
+          # Get the ngrok public URL, and handle errors if it fails
           NGROK_URL=$(curl --silent http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+
+          # If ngrok fails, use the default value (localhost:9091)
+          if [ -z "$NGROK_URL" ]; then
+            echo "Ngrok URL not found, using default localhost:9091"
+            NGROK_URL="http://localhost:9091"
+          fi
 
           # Update the PUSHGATEWAY_URL to the ngrok public URL
           echo "PUSHGATEWAY_URL=$NGROK_URL" >> $GITHUB_ENV
