@@ -32,5 +32,12 @@ services:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
     restart: always
 
+  pushgateway:
+    image: prom/pushgateway:latest
+    container_name: pushgateway
+    ports:
+      - '9091:9091'
+    restart: always
+
 volumes:
   grafana_data:

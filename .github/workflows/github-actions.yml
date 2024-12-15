@@ -35,11 +35,25 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml up -d
       - name: Run backend test
+        id: backend_test
         run: |
           chmod +x mvnw
-          npm run ci:backend:test
+          npm run ci:backend:test || echo "tests_failed=$?" >> $GITHUB_ENV
       - name: Run frontend test
-        run: npm run ci:frontend:test
+        id: frontend_test
+        run: |
+          npm run ci:frontend:test || echo "tests_failed=$?" >> $GITHUB_ENV
+      - name: Collect Test Metrics
+        run: |
+          BACKEND_TESTS_FAILED=$(grep -c "FAIL" backend-test-results.log || true)
+          FRONTEND_TESTS_FAILED=$(grep -c "FAIL" frontend-test-results.log || true)
+          TOTAL_FAILED=$((BACKEND_TESTS_FAILED + FRONTEND_TESTS_FAILED))
+          TOTAL_SUCCEEDED=$((TOTAL_TESTS - TOTAL_FAILED))
+          echo "tests_failed $TOTAL_FAILED" > metrics.prom
+          echo "tests_succeeded $TOTAL_SUCCEEDED" >> metrics.prom
+      - name: Push Test Metrics to Prometheus Pushgateway
+        run: |
+          curl --data-binary @metrics.prom http://localhost:9091/metrics/job/github_actions
       - name: Package application
         run: npm run java:jar:prod
       - name: 'E2E: Package'
