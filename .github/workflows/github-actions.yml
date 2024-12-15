@@ -48,20 +48,27 @@ jobs:
         continue-on-error: true # Continue even if tests fail
       - name: Collect Test Metrics
         run: |
-          # Capture test results
+          # Capture test results based on test outcomes
           BACKEND_TESTS_FAILED=${{ steps.backend_test.outcome == 'failure' && 1 || 0 }}
           FRONTEND_TESTS_FAILED=${{ steps.frontend_test.outcome == 'failure' && 1 || 0 }}
 
-          # Use the summary for total and failed tests
+          # Calculate the total tests, failed, and succeeded
           TOTAL_TESTS=481  # 401 tests passed + 80 test suites (total)
           TOTAL_FAILED=$((BACKEND_TESTS_FAILED + FRONTEND_TESTS_FAILED))
           TOTAL_SUCCEEDED=$((TOTAL_TESTS - TOTAL_FAILED))
 
-          # Write the results to metrics.prom
+          # Check if metrics.prom exists; if not, create it
+          echo "Creating or updating metrics.prom with the collected metrics..."
+
+          # Create or overwrite the metrics.prom file
           echo "tests_failed $TOTAL_FAILED" > metrics.prom
           echo "tests_succeeded $TOTAL_SUCCEEDED" >> metrics.prom
+
+          # Optionally print the content for debugging
+          cat metrics.prom
       - name: Push Test Metrics to Prometheus Pushgateway
         run: |
+          # Push the metrics to the Pushgateway
           curl --data-binary @metrics.prom ${PUSHGATEWAY_URL}/metrics/job/github_actions
       - name: Package application
         run: npm run java:jar:prod
