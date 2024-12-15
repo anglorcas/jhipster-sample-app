@@ -108,6 +108,11 @@ jobs:
           if [[ "$TOTAL_TESTS_FAILED" -lt 0 ]]; then TOTAL_TESTS_FAILED=0; fi
           if [[ "$TOTAL_TESTS_SUCCEEDED" -lt 0 ]]; then TOTAL_TESTS_SUCCEEDED=0; fi
 
+          # Output the aggregated test result for verification
+          echo "Total Tests Run: $TOTAL_TESTS_RUN"
+          echo "Total Tests Failed: $TOTAL_TESTS_FAILED"
+          echo "Total Tests Succeeded: $TOTAL_TESTS_SUCCEEDED"
+
           # Create metrics file
           echo "tests_run_total $TOTAL_TESTS_RUN" > metrics.prom
           echo "tests_failed_total $TOTAL_TESTS_FAILED" >> metrics.prom
