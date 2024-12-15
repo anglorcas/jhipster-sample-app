@@ -27,9 +27,16 @@ services:
     image: observabilitystack/github-actions-exporter:latest
     container_name: github_actions_exporter
     ports:
-      - '9100:9100' # Exporter's metrics endpoint
+      - '9999:9999' # Exporter's metrics endpoint
     environment:
       - GITHUB_TOKEN=${GITHUB_TOKEN}
+    restart: always
+
+  pushgateway:
+    image: prom/pushgateway:latest
+    container_name: pushgateway
+    ports:
+      - '9091:9091'
     restart: always
 
 volumes:
