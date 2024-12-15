@@ -26,24 +26,49 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17.x'
+
+      # Install Docker Compose
       - name: Install Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get install -y docker-compose
-      - name: Install node.js packages
-        run: npm install
-      - name: Start services for metrics collection
+
+      # Install ngrok
+      - name: Install ngrok
         run: |
-          docker-compose -f docker-compose.yml up -d
+          curl -s https://ngrok.com/download | tar xz
+          sudo mv ngrok /usr/local/bin
+
+      # Start Pushgateway and ngrok
+      - name: Start Pushgateway and ngrok
+        run: |
+          # Start Pushgateway using Docker
+          docker run -d -p 9091:9091 prom/pushgateway
+
+          # Start ngrok to forward port 9091 (Pushgateway)
+          nohup ngrok http 9091 > ngrok.log &
+
+          # Wait for ngrok to start and then get the public URL
+          sleep 5
+          NGROK_URL=$(curl --silent http://localhost:4040/api/tunnels | jq -r '.tunnels[0].public_url')
+
+          # Update the PUSHGATEWAY_URL to the ngrok public URL
+          echo "PUSHGATEWAY_URL=$NGROK_URL" >> $GITHUB_ENV
+
+      # Run backend tests
       - name: Run backend tests
         id: backend_tests
         run: |
           chmod +x mvnw
           npm run ci:backend:test > backend-test-output.log || true
+
+      # Run frontend tests
       - name: Run frontend tests
         id: frontend_tests
         run: |
           npm run ci:frontend:test > frontend-test-output.log || true
+
+      # Extract test metrics and push to Pushgateway
       - name: Extract test metrics and push to Pushgateway
         run: |
           # Parse backend test results
@@ -68,8 +93,12 @@ jobs:
 
           # Push metrics to Prometheus Pushgateway
           curl --data-binary @metrics.prom ${PUSHGATEWAY_URL}/metrics/job/github_actions
+
+      # Package application
       - name: Package application
         run: npm run java:jar:prod
+
+      # E2E Tests
       - name: 'E2E: Package'
         run: npm run ci:e2e:package
       - name: 'E2E: Prepare'
@@ -78,6 +107,9 @@ jobs:
         run: npm run ci:e2e:run
       - name: 'E2E: Teardown'
         run: npm run ci:e2e:teardown
+
+      # Stop services
       - name: Stop services
         run: |
           docker-compose -f docker-compose.yml down
+          pkill ngrok
