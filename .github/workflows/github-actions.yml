@@ -39,17 +39,19 @@ jobs:
         id: backend_test
         run: |
           chmod +x mvnw
-          npm run ci:backend:test || echo "tests_failed=$?" >> $GITHUB_ENV
+          npm run ci:backend:test
+        continue-on-error: true # Continue even if tests fail
       - name: Run frontend test
         id: frontend_test
         run: |
-          npm run ci:frontend:test || echo "tests_failed=$?" >> $GITHUB_ENV
+          npm run ci:frontend:test
+        continue-on-error: true # Continue even if tests fail
       - name: Collect Test Metrics
         run: |
-          BACKEND_TESTS_FAILED=$(grep -c "FAIL" backend-test-results.log || true)
-          FRONTEND_TESTS_FAILED=$(grep -c "FAIL" frontend-test-results.log || true)
+          BACKEND_TESTS_FAILED=${{ steps.backend_test.outcome == 'failure' && 1 || 0 }}
+          FRONTEND_TESTS_FAILED=${{ steps.frontend_test.outcome == 'failure' && 1 || 0 }}
           TOTAL_FAILED=$((BACKEND_TESTS_FAILED + FRONTEND_TESTS_FAILED))
-          TOTAL_SUCCEEDED=$((TOTAL_TESTS - TOTAL_FAILED))
+          TOTAL_SUCCEEDED=$((2 - TOTAL_FAILED)) # Assuming two test suites (backend + frontend)
           echo "tests_failed $TOTAL_FAILED" > metrics.prom
           echo "tests_succeeded $TOTAL_SUCCEEDED" >> metrics.prom
       - name: Push Test Metrics to Prometheus Pushgateway
