@@ -36,8 +36,10 @@ jobs:
       # Install ngrok
       - name: Install ngrok
         run: |
-          curl -s https://ngrok.com/download | tar xz
+          curl -s https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip -o ngrok.zip
+          unzip ngrok.zip
           sudo mv ngrok /usr/local/bin
+          rm ngrok.zip
 
       # Start Pushgateway and ngrok
       - name: Start Pushgateway and ngrok
