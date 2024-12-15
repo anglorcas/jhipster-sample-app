@@ -15,6 +15,7 @@ jobs:
       JHI_DISABLE_WEBPACK_LOGS: true
       NG_CLI_ANALYTICS: false
       GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+      PUSHGATEWAY_URL: http://localhost:9091
 
     steps:
       - uses: actions/checkout@v2
@@ -34,26 +35,39 @@ jobs:
       - name: Start services for metrics collection
         run: |
           docker-compose -f docker-compose.yml up -d
-      - name: Run backend test
-        id: backend_test
+      - name: Run backend tests
+        id: backend_tests
         run: |
           chmod +x mvnw
-          npm run ci:backend:test || echo "tests_failed=$?" >> $GITHUB_ENV
-      - name: Run frontend test
-        id: frontend_test
+          npm run ci:backend:test > backend-test-output.log || true
+      - name: Run frontend tests
+        id: frontend_tests
         run: |
-          npm run ci:frontend:test || echo "tests_failed=$?" >> $GITHUB_ENV
-      - name: Collect Test Metrics
+          npm run ci:frontend:test > frontend-test-output.log || true
+      - name: Extract test metrics and push to Pushgateway
         run: |
-          BACKEND_TESTS_FAILED=$(grep -c "FAIL" backend-test-results.log || true)
-          FRONTEND_TESTS_FAILED=$(grep -c "FAIL" frontend-test-results.log || true)
-          TOTAL_FAILED=$((BACKEND_TESTS_FAILED + FRONTEND_TESTS_FAILED))
-          TOTAL_SUCCEEDED=$((TOTAL_TESTS - TOTAL_FAILED))
-          echo "tests_failed $TOTAL_FAILED" > metrics.prom
-          echo "tests_succeeded $TOTAL_SUCCEEDED" >> metrics.prom
-      - name: Push Test Metrics to Prometheus Pushgateway
-        run: |
-          curl --data-binary @metrics.prom http://localhost:9091/metrics/job/github_actions
+          # Parse backend test results
+          BACKEND_TESTS_RUN=$(grep -oP '(?<=Tests run: )\d+' backend-test-output.log || echo 0)
+          BACKEND_TESTS_FAILED=$(grep -oP '(?<=Failures: )\d+' backend-test-output.log || echo 0)
+          BACKEND_TESTS_SUCCEEDED=$((BACKEND_TESTS_RUN - BACKEND_TESTS_FAILED))
+
+          # Parse frontend test results
+          FRONTEND_TESTS_RUN=$(grep -oP '(?<=Tests run: )\d+' frontend-test-output.log || echo 0)
+          FRONTEND_TESTS_FAILED=$(grep -oP '(?<=Failures: )\d+' frontend-test-output.log || echo 0)
+          FRONTEND_TESTS_SUCCEEDED=$((FRONTEND_TESTS_RUN - FRONTEND_TESTS_FAILED))
+
+          # Combine totals
+          TOTAL_TESTS_RUN=$((BACKEND_TESTS_RUN + FRONTEND_TESTS_RUN))
+          TOTAL_TESTS_FAILED=$((BACKEND_TESTS_FAILED + FRONTEND_TESTS_FAILED))
+          TOTAL_TESTS_SUCCEEDED=$((TOTAL_TESTS_RUN - TOTAL_TESTS_FAILED))
+
+          # Create metrics file
+          echo "tests_run_total $TOTAL_TESTS_RUN" > metrics.prom
+          echo "tests_failed_total $TOTAL_TESTS_FAILED" >> metrics.prom
+          echo "tests_succeeded_total $TOTAL_TESTS_SUCCEEDED" >> metrics.prom
+
+          # Push metrics to Prometheus Pushgateway
+          curl --data-binary @metrics.prom ${PUSHGATEWAY_URL}/metrics/job/github_actions
       - name: Package application
         run: npm run java:jar:prod
       - name: 'E2E: Package'
