@@ -32,9 +32,6 @@ jobs:
           sudo apt-get install -y docker-compose
       - name: Install node.js packages
         run: npm install
-      - name: Start services for metrics collection
-        run: |
-          docker-compose -f docker-compose.yml up -d
       - name: Run backend test
         id: backend_test
         run: |
@@ -81,6 +78,3 @@ jobs:
         run: npm run ci:e2e:run
       - name: 'E2E: Teardown'
         run: npm run ci:e2e:teardown
-      - name: Stop services
-        run: |
-          docker-compose -f docker-compose.yml down
