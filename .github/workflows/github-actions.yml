@@ -70,6 +70,7 @@ jobs:
         run: |
           # Push the metrics to the Pushgateway
           curl --data-binary @metrics.prom ${PUSHGATEWAY_URL}/metrics/job/github_actions
+          echo "chapter_12_metric $(date +%s)" | curl --data-binary @- ${PUSHGATEWAY_URL}/metrics/job/chapter9
       - name: Package application
         run: npm run java:jar:prod
       - name: 'E2E: Package'
