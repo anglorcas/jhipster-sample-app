@@ -65,9 +65,18 @@ jobs:
           cat metrics.prom
       - name: Push Test Metrics to Prometheus Pushgateway
         run: |
-          # Push the metrics to the Pushgateway
-          curl --data-binary @metrics.prom ${PUSHGATEWAY_URL}/metrics/job/github_actions
-          echo "chapter_12_metric $(date +%s)" | curl --data-binary @- ${PUSHGATEWAY_URL}/metrics/job/chapter12
+          echo "Pushing metrics to Pushgateway..."
+          echo "Metrics content:"
+          cat metrics.prom
+
+          echo "Testing connectivity to ${PUSHGATEWAY_URL}..."
+          curl -v ${PUSHGATEWAY_URL}
+
+          echo "Sending metrics to Pushgateway..."
+          curl -v --data-binary @metrics.prom ${PUSHGATEWAY_URL}/metrics/job/github_actions
+
+          echo "Pushing chapter_12_metric..."
+          echo "chapter_12_metric $(date +%s)" | curl -v --data-binary @- ${PUSHGATEWAY_URL}/metrics/job/chapter12
       - name: Package application
         run: npm run java:jar:prod
       - name: 'E2E: Package'
