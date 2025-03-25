@@ -53,11 +53,18 @@ jobs:
       - name: Upload Frontend Coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: |
-            token: ${{ secrets.CODECOV_TOKEN }}
             target/test-results/lcov.info       # LCov data
             target/test-results/coverage-final.json  # JSON summary
           flags: frontend
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: |
+            target/site/jacoco/jacoco.xml
+            target/test-results/lcov.info
       - name: Collect Test Metrics
         run: |
           # Capture test results based on test outcomes
