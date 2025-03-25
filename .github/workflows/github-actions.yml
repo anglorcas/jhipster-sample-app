@@ -55,8 +55,8 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: |
-            target/test-results/lcov.info       # LCov data
-            target/test-results/coverage-final.json  # JSON summary
+            target/test-results/lcov.info
+            target/test-results/coverage-final.json
           flags: frontend
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v5
