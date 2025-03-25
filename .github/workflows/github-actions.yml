@@ -15,6 +15,7 @@ jobs:
       JHI_DISABLE_WEBPACK_LOGS: true
       NG_CLI_ANALYTICS: false
       GITHUB_TOKEN: ${{ secrets.ACTION_TOKEN }}
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       PUSHGATEWAY_URL: https://profound-abnormally-monkfish.ngrok-free.app # Static ngrok URL
 
     steps:
@@ -43,6 +44,20 @@ jobs:
         run: |
           npm run ci:frontend:test
         continue-on-error: true # Continue even if tests fail
+      - name: Upload Backend Coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: target/site/jacoco/jacoco.xml
+          flags: backend
+      - name: Upload Frontend Coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: |
+            token: ${{ secrets.CODECOV_TOKEN }}
+            target/test-results/lcov.info       # LCov data
+            target/test-results/coverage-final.json  # JSON summary
+          flags: frontend
       - name: Collect Test Metrics
         run: |
           # Capture test results based on test outcomes
