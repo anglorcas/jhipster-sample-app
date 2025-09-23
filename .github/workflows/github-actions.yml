@@ -116,6 +116,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Auto-provided by GitHub
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # You must create this in SonarCloud and add to repo secrets
+          SONAR_HOST_URL: https://sonarcloud.io
         with:
           args: >
             -Dsonar.projectKey=anglorcas_jhipster-sample-app
