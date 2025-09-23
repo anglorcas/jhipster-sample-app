@@ -121,6 +121,8 @@ jobs:
             -Dsonar.projectKey=anglorcas_jhipster-sample-app
             -Dsonar.organization=anglorcas-org-66
             -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.java.binaries=target/classes
+            -Dsonar.java.test.binaries=target/test-classes
 
       - name: Package application
         run: npm run java:jar:prod
