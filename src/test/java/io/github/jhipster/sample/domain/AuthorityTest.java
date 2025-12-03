@@ -31,4 +31,47 @@ class AuthorityTest {
         authority.setName(authority1.getName());
         assertThat(authority).hasSameHashCodeAs(authority1);
     }
+
+    @Test
+    void toStringShouldIncludeName() {
+        var authority = getAuthoritySample1();
+        assertThat(authority.toString()).contains(authority.getName());
+    }
+
+    @Test
+    void getIdShouldReturnName() {
+        Authority authority = getAuthoritySample1();
+        assertThat(authority.getId()).isEqualTo(authority.getName());
+    }
+
+    @Test
+    void nameBuilderShouldSetValue() {
+        Authority authority = new Authority().name("ROLE_TEST1");
+        assertThat(authority.getName()).isEqualTo("ROLE_TEST1");
+    }
+
+    @Test
+    void isNewShouldBeTrueBeforePersistAndFalseAfter() {
+        Authority authority = new Authority().name("ROLE_TEST2");
+
+        // Antes de persistir
+        assertThat(authority.isNew()).isTrue();
+
+        // Simulación de persistencia
+        authority.setIsPersisted();
+
+        // Después de persistir
+        assertThat(authority.isNew()).isFalse();
+    }
+
+    @Test
+    void updateEntityStateShouldMarkAsPersisted() {
+        Authority authority = new Authority().name("ROLE_TEST3");
+
+        assertThat(authority.isNew()).isTrue();
+
+        authority.updateEntityState();
+
+        assertThat(authority.isNew()).isFalse();
+    }
 }
