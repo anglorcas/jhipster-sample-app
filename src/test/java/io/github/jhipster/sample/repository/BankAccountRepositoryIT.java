@@ -7,7 +7,6 @@ import io.github.jhipster.sample.domain.BankAccount;
 import io.github.jhipster.sample.domain.User;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,9 +52,8 @@ class BankAccountRepositoryIT {
 
     @Test
     void shouldFindOneWithEagerRelationships() {
-        Optional<BankAccount> result = bankAccountRepository.findOneWithEagerRelationships(bankAccount.getId());
-        assertThat(result).isPresent();
-        assertThat(result.get().getUser()).isEqualTo(user);
+        BankAccount account = bankAccountRepository.findOneWithEagerRelationships(bankAccount.getId()).orElseThrow();
+        assertThat(account.getUser()).isEqualTo(user);
     }
 
     @Test
@@ -74,10 +72,9 @@ class BankAccountRepositoryIT {
 
     @Test
     void shouldSaveAndRetrieveBankAccount() {
-        Optional<BankAccount> found = bankAccountRepository.findById(bankAccount.getId());
-        assertThat(found).isPresent();
-        assertThat(found.get().getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(found.get().getBalance()).isEqualTo(DEFAULT_BALANCE);
+        BankAccount found = bankAccountRepository.findById(bankAccount.getId()).orElseThrow();
+        assertThat(found.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(found.getBalance()).isEqualTo(DEFAULT_BALANCE);
     }
 
     @Test
@@ -85,8 +82,9 @@ class BankAccountRepositoryIT {
         bankAccountRepository.delete(bankAccount);
         bankAccountRepository.flush();
 
-        Optional<BankAccount> result = bankAccountRepository.findById(bankAccount.getId());
-        assertThat(result).isNotPresent();
+        // Ahora usamos orElseThrow en negativo para Modernizer
+        boolean notFound = bankAccountRepository.findById(bankAccount.getId()).map(acc -> false).orElse(true); // Si no existe, orElse ejecuta true
+        assertThat(notFound).isTrue();
     }
 
     @Test
