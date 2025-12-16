@@ -37,7 +37,7 @@ class UserRepositoryIT {
         userRepository.findOneByLogin(DEFAULT_LOGIN).ifPresent(userRepository::delete);
 
         // Prevenir duplicación de authorities — JHipster ya creó ambas
-        Authority admin = authorityRepository.findById("ROLE_ADMIN").orElseThrow();
+        //Authority admin = authorityRepository.findById("ROLE_ADMIN").orElseThrow();
         Authority userRole = authorityRepository.findById("ROLE_USER").orElseThrow();
 
         // Creamos un usuario activado normal
