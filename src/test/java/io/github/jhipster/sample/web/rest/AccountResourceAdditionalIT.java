@@ -1,4 +1,3 @@
-/* 
 package io.github.jhipster.sample.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -125,5 +124,3 @@ class AccountResourceAdditionalIT {
         assertThat(updated.getLastModifiedDate()).isNotNull();
     }
 }
-
-*/
