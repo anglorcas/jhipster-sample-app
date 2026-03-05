@@ -141,7 +141,19 @@ jobs:
         run: npm run ci:e2e:run
 
       - name: 'E2E: Run (Playwright)'
-        run: npx playwright test --config=src/test/javascript/playwright/playwright.config.ts
+        run: |
+          # Start the app in the background and save its PID
+          npm run start:prod &
+          APP_PID=$!
+
+          # Wait for localhost:8080 to be ready
+          npx wait-on http://localhost:8080
+
+          # Run Playwright tests
+          npx playwright test --config=src/test/javascript/playwright/playwright.config.ts
+
+          # Kill the app process after tests
+          kill $APP_PID || true
 
       - name: Upload Playwright Report
         if: always()
