@@ -1,10 +1,10 @@
-<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="3.192921">
-<testsuite name="login.spec.ts" timestamp="2026-03-05T16:10:59.053Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.877" errors="0">
-<testcase name="test" classname="login.spec.ts" time="1.877">
+<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="3.228031">
+<testsuite name="login.spec.ts" timestamp="2026-03-05T16:32:36.777Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.163" errors="0">
+<testcase name="test" classname="login.spec.ts" time="1.163">
 </testcase>
 </testsuite>
-<testsuite name="login.spec.ts" timestamp="2026-03-05T16:10:59.053Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.631" errors="0">
-<testcase name="test" classname="login.spec.ts" time="1.631">
+<testsuite name="login.spec.ts" timestamp="2026-03-05T16:32:36.777Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.607" errors="0">
+<testcase name="test" classname="login.spec.ts" time="1.607">
 </testcase>
 </testsuite>
 </testsuites>

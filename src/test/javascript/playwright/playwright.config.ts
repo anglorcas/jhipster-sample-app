@@ -22,4 +22,11 @@ export default defineConfig({
   ],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
+
+  webServer: {
+    command: 'npm run ci:e2e:server:start',
+    url: 'http://localhost:8080',
+    timeout: 180000,
+    reuseExistingServer: !process.env.CI,
+  },
 });
