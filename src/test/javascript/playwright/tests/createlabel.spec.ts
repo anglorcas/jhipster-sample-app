@@ -13,7 +13,6 @@ test('test', async ({ page }) => {
   await page.getByRole('button', { name: 'Create a new Label' }).click();
   await page.getByRole('textbox', { name: 'Label' }).click();
   await page.getByRole('textbox', { name: 'Label' }).fill('new');
-  await page.getByLabel('Operation').selectOption('0: Object');
   await page.getByRole('button', { name: 'Save' }).click();
   await page.getByText('A new Label is created with').click();
 });
