@@ -1,10 +1,26 @@
-<testsuites id="" name="" tests="2" failures="0" skipped="0" errors="0" time="3.143335">
-<testsuite name="login.spec.ts" timestamp="2026-03-05T19:22:19.944Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.156" errors="0">
-<testcase name="test" classname="login.spec.ts" time="1.156">
+<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="6.91242">
+<testsuite name="createbankacount.spec.ts" timestamp="2026-03-07T14:55:30.892Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.464" errors="0">
+<testcase name="test" classname="createbankacount.spec.ts" time="2.464">
 </testcase>
 </testsuite>
-<testsuite name="login.spec.ts" timestamp="2026-03-05T19:22:19.944Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.551" errors="0">
-<testcase name="test" classname="login.spec.ts" time="1.551">
+<testsuite name="createlabel.spec.ts" timestamp="2026-03-07T14:55:30.892Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.097" errors="0">
+<testcase name="test" classname="createlabel.spec.ts" time="2.097">
+</testcase>
+</testsuite>
+<testsuite name="login.spec.ts" timestamp="2026-03-07T14:55:30.892Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.776" errors="0">
+<testcase name="test" classname="login.spec.ts" time="1.776">
+</testcase>
+</testsuite>
+<testsuite name="createbankacount.spec.ts" timestamp="2026-03-07T14:55:30.892Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.977" errors="0">
+<testcase name="test" classname="createbankacount.spec.ts" time="2.977">
+</testcase>
+</testsuite>
+<testsuite name="createlabel.spec.ts" timestamp="2026-03-07T14:55:30.892Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.151" errors="0">
+<testcase name="test" classname="createlabel.spec.ts" time="2.151">
+</testcase>
+</testsuite>
+<testsuite name="login.spec.ts" timestamp="2026-03-07T14:55:30.892Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.69" errors="0">
+<testcase name="test" classname="login.spec.ts" time="1.69">
 </testcase>
 </testsuite>
 </testsuites>
