@@ -1,26 +1,42 @@
-<testsuites id="" name="" tests="6" failures="0" skipped="0" errors="0" time="6.743150000000001">
-<testsuite name="createbankacount.spec.ts" timestamp="2026-03-07T15:25:53.728Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.054" errors="0">
-<testcase name="test" classname="createbankacount.spec.ts" time="2.054">
+<testsuites id="" name="" tests="10" failures="0" skipped="0" errors="0" time="9.194671">
+<testsuite name="createBankAccount.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.053" errors="0">
+<testcase name="test" classname="createBankAccount.spec.ts" time="2.053">
 </testcase>
 </testsuite>
-<testsuite name="createlabel.spec.ts" timestamp="2026-03-07T15:25:53.728Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.939" errors="0">
-<testcase name="test" classname="createlabel.spec.ts" time="1.939">
+<testsuite name="createLabel.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.835" errors="0">
+<testcase name="test" classname="createLabel.spec.ts" time="1.835">
 </testcase>
 </testsuite>
-<testsuite name="login.spec.ts" timestamp="2026-03-07T15:25:53.728Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.58" errors="0">
-<testcase name="test" classname="login.spec.ts" time="1.58">
+<testsuite name="createOperation.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.034" errors="0">
+<testcase name="test" classname="createOperation.spec.ts" time="2.034">
 </testcase>
 </testsuite>
-<testsuite name="createbankacount.spec.ts" timestamp="2026-03-07T15:25:53.728Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.768" errors="0">
-<testcase name="test" classname="createbankacount.spec.ts" time="2.768">
+<testsuite name="login.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.47" errors="0">
+<testcase name="test" classname="login.spec.ts" time="1.47">
 </testcase>
 </testsuite>
-<testsuite name="createlabel.spec.ts" timestamp="2026-03-07T15:25:53.728Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.079" errors="0">
-<testcase name="test" classname="createlabel.spec.ts" time="2.079">
+<testsuite name="viewBankAccount.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.189" errors="0">
+<testcase name="test" classname="viewBankAccount.spec.ts" time="1.189">
 </testcase>
 </testsuite>
-<testsuite name="login.spec.ts" timestamp="2026-03-07T15:25:53.728Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.674" errors="0">
-<testcase name="test" classname="login.spec.ts" time="1.674">
+<testsuite name="createBankAccount.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.889" errors="0">
+<testcase name="test" classname="createBankAccount.spec.ts" time="2.889">
+</testcase>
+</testsuite>
+<testsuite name="createLabel.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.713" errors="0">
+<testcase name="test" classname="createLabel.spec.ts" time="2.713">
+</testcase>
+</testsuite>
+<testsuite name="createOperation.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="firefox" tests="1" failures="0" skipped="0" time="3.136" errors="0">
+<testcase name="test" classname="createOperation.spec.ts" time="3.136">
+</testcase>
+</testsuite>
+<testsuite name="login.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.434" errors="0">
+<testcase name="test" classname="login.spec.ts" time="2.434">
+</testcase>
+</testsuite>
+<testsuite name="viewBankAccount.spec.ts" timestamp="2026-03-09T15:17:17.490Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.495" errors="0">
+<testcase name="test" classname="viewBankAccount.spec.ts" time="1.495">
 </testcase>
 </testsuite>
 </testsuites>
