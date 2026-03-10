@@ -10,8 +10,7 @@ test('test', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Password' }).fill('user');
   await page.getByRole('button', { name: 'Sign in' }).click();
   await page.getByRole('link', { name: 'Entities' }).click();
-  await page.getByRole('link', { name: 'Bank Account' }).click();
-  await page.getByText('Bank Accounts').click();
-  await page.getByRole('button', { name: 'Create a new Bank Account' }).click();
-  await page.getByRole('heading', { name: 'Create or edit a Bank Account' }).click();
+  await page.getByRole('link', { name: 'Operation' }).click();
+  await page.getByRole('button', { name: 'Create a new Operation' }).click();
+  await page.getByRole('heading', { name: 'Create or edit a Operation' }).click();
 });
