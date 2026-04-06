@@ -1,0 +1,14 @@
+{
+  "extends": "../../../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "../../../../target/playwright/tsc",
+    "target": "es2018",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "types": ["playwright/test", "node"],
+    "sourceMap": false,
+    "strict": true
+  },
+  "include": ["./tests/**/*.ts", "./playwright.config.ts"]
+}
