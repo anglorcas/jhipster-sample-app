@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 import io.github.jhipster.sample.IntegrationTest;
+import io.github.jhipster.sample.domain.Authority;
 import io.github.jhipster.sample.domain.User;
 import io.github.jhipster.sample.repository.UserRepository;
 import io.github.jhipster.sample.service.UserService;
 import java.util.Locale;
+import java.util.Set;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -42,6 +45,12 @@ class DomainUserDetailsServiceIT {
     @Qualifier("userDetailsService")
     private UserDetailsService domainUserDetailsService;
 
+    private Authority userAuthority() {
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.USER);
+        return authority;
+    }
+
     public User getUserOne() {
         User userOne = new User();
         userOne.setLogin(USER_ONE_LOGIN);
@@ -51,6 +60,7 @@ class DomainUserDetailsServiceIT {
         userOne.setFirstName("userOne");
         userOne.setLastName("doe");
         userOne.setLangKey("en");
+        userOne.setAuthorities(Set.of(userAuthority()));
         return userOne;
     }
 
@@ -131,6 +141,41 @@ class DomainUserDetailsServiceIT {
     void assertThatUserNotActivatedExceptionIsThrownForNotActivatedUsers() {
         assertThatExceptionOfType(UserNotActivatedException.class).isThrownBy(() ->
             domainUserDetailsService.loadUserByUsername(USER_THREE_LOGIN)
+        );
+    }
+
+    @Test
+    void assertThatUsernameNotFoundExceptionIsThrownForUnknownLogin() {
+        assertThatExceptionOfType(UsernameNotFoundException.class).isThrownBy(() ->
+            domainUserDetailsService.loadUserByUsername("unknown-login")
+        );
+    }
+
+    @Test
+    void assertThatUsernameNotFoundExceptionIsThrownForUnknownEmail() {
+        assertThatExceptionOfType(UsernameNotFoundException.class).isThrownBy(() ->
+            domainUserDetailsService.loadUserByUsername("unknown-email@localhost")
+        );
+    }
+
+    @Test
+    void assertThatUserAuthoritiesAreLoaded() {
+        UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN);
+
+        assertThat(userDetails.getAuthorities()).extracting("authority").contains("ROLE_USER");
+    }
+
+    @Test
+    void assertThatPasswordIsLoadedFromDatabase() {
+        UserDetails userDetails = domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN);
+
+        assertThat(userDetails.getPassword()).isNotBlank();
+    }
+
+    @Test
+    void assertThatLoginWithTrailingSpacesFails() {
+        assertThatExceptionOfType(UsernameNotFoundException.class).isThrownBy(() ->
+            domainUserDetailsService.loadUserByUsername(USER_ONE_LOGIN + " ")
         );
     }
 }
