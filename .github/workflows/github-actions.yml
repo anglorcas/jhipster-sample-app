@@ -131,6 +131,12 @@ jobs:
       - name: Package application
         run: npm run java:jar:prod
 
+      - name: 'E2E: Package'
+        run: npm run ci:e2e:package
+
+      - name: 'E2E: Prepare'
+        run: npm run ci:e2e:prepare
+
       - name: Run JMeter Performance Tests
         run: |
           echo "Starting backend for JMeter..."
@@ -164,12 +170,6 @@ jobs:
         with:
           name: jmeter-results
           path: target/jmeter/
-
-      - name: 'E2E: Package'
-        run: npm run ci:e2e:package
-
-      - name: 'E2E: Prepare'
-        run: npm run ci:e2e:prepare
 
       - name: 'E2E: Run (Cypress)'
         run: npm run ci:e2e:run
