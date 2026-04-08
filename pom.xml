@@ -413,6 +413,9 @@
                     <testFilesDirectory>src/test/jmeter</testFilesDirectory>
                     <resultsDirectory>target/jmeter/results</resultsDirectory>
                     <resultsFileFormat>csv</resultsFileFormat>
+
+                    <errorRateThresholdInPercent>1</errorRateThresholdInPercent>
+                    <failBuildOnError>true</failBuildOnError>
                 </configuration>
             </plugin>
         </plugins>
