@@ -137,6 +137,40 @@ jobs:
       - name: 'E2E: Prepare'
         run: npm run ci:e2e:prepare
 
+      - name: 'E2E: Run (Cypress)'
+        run: npm run ci:e2e:run
+
+      - name: 'E2E: Run (Playwright)'
+        run: |
+          echo "Starting backend JAR in background..."
+          # Start backend
+          java -jar target/*.jar &
+          BACKEND_PID=$!
+
+          # Ensure backend is killed even if something fails
+          trap "echo 'Stopping backend...'; kill $BACKEND_PID" EXIT SIGINT SIGTERM
+
+          # Wait until backend is ready (retry loop)
+          echo "Waiting for backend to be ready on http://localhost:8080 ..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/ >/dev/null; then
+              echo "Backend is up!"
+              break
+            fi
+            echo "Waiting 2s..."
+            sleep 2
+          done
+
+          # Run Playwright tests
+          npx playwright test --config=src/test/javascript/playwright/playwright.config.ts
+
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: src/test/javascript/playwright/playwright-report
+
       - name: Run JMeter Performance Tests
         run: |
           echo "Starting backend for JMeter..."
@@ -170,43 +204,6 @@ jobs:
         with:
           name: jmeter-results
           path: target/jmeter/
-
-      - name: 'E2E: Run (Cypress)'
-        run: npm run ci:e2e:run
-
-      - name: 'E2E: Run (Playwright)'
-        run: |
-          echo "Starting backend JAR in background..."
-          # Start backend in prod mode
-          java -jar target/*.jar &
-
-          # Save PID so we can kill it later
-          BACKEND_PID=$!
-
-          # Wait until backend is ready (retry loop)
-          echo "Waiting for backend to be ready on http://localhost:8080 ..."
-          for i in {1..30}; do
-            if curl -s http://localhost:8080/ >/dev/null; then
-              echo "Backend is up!"
-              break
-            fi
-            echo "Waiting 2s..."
-            sleep 2
-          done
-
-          # Run Playwright tests
-          npx playwright test --config=src/test/javascript/playwright/playwright.config.ts
-
-          # Kill the backend process
-          echo "Stopping backend..."
-          kill $BACKEND_PID
-
-      - name: Upload Playwright Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: src/test/javascript/playwright/playwright-report
 
       - name: 'E2E: Teardown'
         run: npm run ci:e2e:teardown
