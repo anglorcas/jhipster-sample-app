@@ -196,7 +196,8 @@ jobs:
           # Run JMeter via Maven wrapper
           echo "Running JMeter tests..."
           chmod +x mvnw
-          ./mvnw -Pperformance jmeter:configure jmeter:jmeter
+          ./mvnw -Pperformance jmeter:configure
+          ./mvnw -Pperformance jmeter:jmeter
 
       - name: Upload JMeter Results
         if: always()
