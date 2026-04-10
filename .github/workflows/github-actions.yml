@@ -171,11 +171,6 @@ jobs:
           name: playwright-report
           path: src/test/javascript/playwright/playwright-report
 
-      - name: JMeter Configure
-        run: |
-          chmod +x mvnw
-          ./mvnw -Pperformance jmeter:configure
-
       - name: Run JMeter Performance Tests
         run: |
           echo "Starting backend for JMeter..."
@@ -201,7 +196,7 @@ jobs:
           # Run JMeter via Maven wrapper
           echo "Running JMeter tests..."
           chmod +x mvnw
-          ./mvnw -Pperformance jmeter:jmeter
+          ./mvnw jmeter:jmeter
 
       - name: Upload JMeter Results
         if: always()

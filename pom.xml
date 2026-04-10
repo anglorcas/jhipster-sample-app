@@ -405,6 +405,37 @@
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>com.lazerycode.jmeter</groupId>
+                <artifactId>jmeter-maven-plugin</artifactId>
+                <version>3.8.0</version>
+                <executions>
+                    <!-- Paso necesario para generar la configuración -->
+                    <execution>
+                        <id>configuration</id>
+                        <goals>
+                            <goal>configure</goal>
+                        </goals>
+                    </execution>
+
+                    <!-- Ejecución de tests -->
+                    <execution>
+                        <id>jmeter-tests</id>
+                        <goals>
+                            <goal>jmeter</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jmeterVersion>5.6.3</jmeterVersion>
+                    <testFilesDirectory>src/test/jmeter</testFilesDirectory>
+                    <resultsDirectory>target/jmeter/results</resultsDirectory>
+                    <resultsFileFormat>csv</resultsFileFormat>
+
+                    <errorRateThresholdInPercent>1</errorRateThresholdInPercent>
+                    <failBuildOnError>true</failBuildOnError>
+                </configuration>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -1292,46 +1323,6 @@
                                 </goals>
                             </execution>
                         </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>performance</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.lazerycode.jmeter</groupId>
-                        <artifactId>jmeter-maven-plugin</artifactId>
-                        <version>3.8.0</version>
-
-                        <executions>
-                            <!-- configuración -->
-                            <execution>
-                                <id>configuration</id>
-                                <goals>
-                                    <goal>configure</goal>
-                                </goals>
-                            </execution>
-
-                            <!-- ejecución -->
-                            <execution>
-                                <id>jmeter-tests</id>
-                                <goals>
-                                    <goal>jmeter</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-
-                        <configuration>
-                            <jmeterVersion>5.6.3</jmeterVersion>
-                            <testFilesDirectory>src/test/jmeter</testFilesDirectory>
-                            <resultsDirectory>target/jmeter/results</resultsDirectory>
-                            <resultsFileFormat>csv</resultsFileFormat>
-
-                            <errorRateThresholdInPercent>1</errorRateThresholdInPercent>
-                            <failBuildOnError>true</failBuildOnError>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
