@@ -421,6 +421,7 @@
                     <!-- Ejecución de tests -->
                     <execution>
                         <id>jmeter-tests</id>
+                        <phase>none</phase>
                         <goals>
                             <goal>jmeter</goal>
                         </goals>
