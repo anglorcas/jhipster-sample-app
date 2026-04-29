@@ -98,6 +98,51 @@ public class CucumberSteps {
     }
 
     // -------------------------
+    // USER CRUD
+    // -------------------------
+    @When("I create a user with login {string} and email {string}")
+    public void createUser(String login, String email) {
+        System.out.println("Creating user: " + login);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        if (token != null) {
+            headers.setBearerAuth(token);
+        }
+        String body =
+            """
+                {
+                    "login": "%s",
+                    "email": "%s",
+                    "activated": true,
+                    "authorities": ["ROLE_USER"]
+                }
+            """.formatted(login, email);
+        HttpEntity<String> req = new HttpEntity<>(body, headers);
+        try {
+            response = restTemplate.exchange(BASE_URL + "/api/admin/users", HttpMethod.POST, req, String.class);
+        } catch (HttpClientErrorException e) {
+            System.out.println("HTTP error: " + e.getStatusCode());
+            response = ResponseEntity.status(e.getStatusCode()).build();
+        }
+    }
+
+    @When("I delete user {string}")
+    public void deleteUser(String login) {
+        System.out.println("Deleting user: " + login);
+        HttpHeaders headers = new HttpHeaders();
+        if (token != null) {
+            headers.setBearerAuth(token);
+        }
+        HttpEntity<Void> req = new HttpEntity<>(headers);
+        try {
+            response = restTemplate.exchange(BASE_URL + "/api/admin/users/" + login, HttpMethod.DELETE, req, String.class);
+        } catch (HttpClientErrorException e) {
+            System.out.println("HTTP error: " + e.getStatusCode());
+            response = ResponseEntity.status(e.getStatusCode()).build();
+        }
+    }
+
+    // -------------------------
     // ASSERT BODY
     // -------------------------
     @Then("response body contains {string}")
