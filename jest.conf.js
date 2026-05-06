@@ -23,6 +23,14 @@ module.exports = {
     ['jest-sonar', { outputDirectory: './target/test-results/jest', outputName: 'TESTS-results-sonar.xml' }],
   ],
   testMatch: ['<rootDir>/src/main/webapp/app/**/@(*.)@(spec.ts)'],
+
+  testPathIgnorePatterns: [
+    '<rootDir>/src/test/javascript/playwright/',
+    '<rootDir>/src/test/jmeter/',
+    '<rootDir>/src/test/gatling/',
+    '<rootDir>/target/',
+  ],
+
   testEnvironmentOptions: {
     url: 'https://jhipster.tech',
   },
