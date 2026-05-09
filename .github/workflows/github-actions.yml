@@ -100,6 +100,7 @@ jobs:
           curl -v ${PUSHGATEWAY_URL}
           curl -v --data-binary @metrics.prom ${PUSHGATEWAY_URL}/metrics/job/github_actions
 
+
           echo "chapter_35_metric $(date +%s)" | curl -v --data-binary @- ${PUSHGATEWAY_URL}/metrics/job/chapter35
 
       - name: Cache SonarQube packages
@@ -160,6 +161,12 @@ jobs:
             echo "Waiting 2s..."
             sleep 2
           done
+
+          # Push metrics
+          echo "Pushing JHipster app metrics..."
+          curl -fsS http://localhost:8080/management/prometheus | \
+            curl -fsS --data-binary @- \
+            ${PUSHGATEWAY_URL}/metrics/job/jhipster_app
 
           # Run Playwright tests
           npx playwright test --config=src/test/javascript/playwright/playwright.config.ts
