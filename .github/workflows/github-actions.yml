@@ -162,14 +162,15 @@ jobs:
             sleep 2
           done
 
-          # Push metrics
-          echo "Pushing JHipster app metrics..."
-          curl -fsS http://localhost:8080/management/prometheus | \
-            curl -fsS --data-binary @- \
-            ${PUSHGATEWAY_URL}/metrics/job/jhipster_app
-
           # Run Playwright tests
           npx playwright test --config=src/test/javascript/playwright/playwright.config.ts
+
+          # Push app metrics after Playwright — JVM tras tests E2E
+          echo "Pushing JHipster app metrics after Playwright..."
+          curl -fsS http://localhost:8080/management/prometheus | \
+            grep -E "^(jvm_memory_used_bytes|jvm_memory_max_bytes|jvm_gc_pause_seconds|http_server_requests_seconds|jvm_threads_live_threads|process_cpu_usage)" | \
+            curl -fsS --data-binary @- \
+            ${PUSHGATEWAY_URL}/metrics/job/jhipster_app/phase/playwright
 
       - name: Upload Playwright Report
         if: always()
@@ -205,6 +206,14 @@ jobs:
           chmod +x mvnw
           ./mvnw jmeter:jmeter
 
+
+          # Push app metrics after JMeter — JVM tras 50k peticiones, el más interesante
+          echo "Pushing JHipster app metrics after JMeter..."
+          curl -fsS http://localhost:8080/management/prometheus | \
+            grep -E "^(jvm_memory_used_bytes|jvm_memory_max_bytes|jvm_gc_pause_seconds|http_server_requests_seconds|jvm_threads_live_threads|process_cpu_usage)" | \
+            curl -fsS --data-binary @- \
+            ${PUSHGATEWAY_URL}/metrics/job/jhipster_app/phase/jmeter
+
       - name: Upload JMeter Results
         if: always()
         uses: actions/upload-artifact@v4
@@ -238,6 +247,13 @@ jobs:
           echo "Running Cucumber tests..."
           chmod +x mvnw
           ./mvnw surefire:test -Dtest=CucumberTest -Dmaven.test.skip=false -DskipCompile=true
+
+          # Push app metrics after Cucumber — JVM tras 29 escenarios BDD
+          echo "Pushing JHipster app metrics after Cucumber..."
+          curl -fsS http://localhost:8080/management/prometheus | \
+            grep -E "^(jvm_memory_used_bytes|jvm_memory_max_bytes|jvm_gc_pause_seconds|http_server_requests_seconds|jvm_threads_live_threads|process_cpu_usage)" | \
+            curl -fsS --data-binary @- \
+            ${PUSHGATEWAY_URL}/metrics/job/jhipster_app/phase/cucumber
 
       - name: 'E2E: Teardown'
         run: npm run ci:e2e:teardown
