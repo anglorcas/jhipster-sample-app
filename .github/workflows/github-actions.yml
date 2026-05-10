@@ -85,12 +85,17 @@ jobs:
           BACKEND_TESTS_FAILED=${{ steps.backend_test.outcome == 'failure' && 1 || 0 }}
           FRONTEND_TESTS_FAILED=${{ steps.frontend_test.outcome == 'failure' && 1 || 0 }}
 
-          TOTAL_TESTS=481
+          TOTAL_TESTS=$(python3 scripts/count_tests.py 2>/dev/null || echo 0)
+
           TOTAL_FAILED=$((BACKEND_TESTS_FAILED + FRONTEND_TESTS_FAILED))
           TOTAL_SUCCEEDED=$((TOTAL_TESTS - TOTAL_FAILED))
 
-          echo "tests_failed $TOTAL_FAILED" > metrics.prom
+          JAVA_FILES_CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null | grep "\.java$" | wc -l || echo 0)
+
+          echo "tests_total $TOTAL_TESTS" > metrics.prom
+          echo "tests_failed $TOTAL_FAILED" >> metrics.prom
           echo "tests_succeeded $TOTAL_SUCCEEDED" >> metrics.prom
+          echo "java_files_changed $JAVA_FILES_CHANGED" >> metrics.prom
 
       - name: Push Test Metrics to Prometheus Pushgateway
         run: |
