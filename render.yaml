@@ -2,6 +2,7 @@ services:
   - type: web
     name: jhipster-sample-app
     runtime: docker
+    plan: free
     envVars:
       - key: JAVA_VERSION
         value: 17
