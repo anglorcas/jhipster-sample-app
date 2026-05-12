@@ -32,6 +32,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Record workflow start time
+        run: echo "WF_START=$(date -u +%s)" >> $GITHUB_ENV
+        
       - name: Install Docker Compose
         run: |
           sudo apt-get update
@@ -117,6 +120,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 
       - name: Wake up Render deployment
+        if: github.ref == 'refs/heads/main'
         run: |
           echo "Pinging Render app to wake it up..."
           curl -s -o /dev/null --connect-timeout 5 --max-time 10 https://jhipster-sample-app.onrender.com/ || true
@@ -263,18 +267,20 @@ jobs:
         run: npm run ci:e2e:teardown
 
       - name: Verify Render deployment
-        if: always()
+        if: github.ref == 'refs/heads/main' && always()
         continue-on-error: true
         run: |
-          echo "Waiting for Render app to be fully awake..."
+          echo "Waiting for Render to deploy a build newer than workflow start ($WF_START)..."
           for i in {1..30}; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://jhipster-sample-app.onrender.com/ || echo "000")
-            echo "Attempt $i: HTTP $STATUS"
-            if [ "$STATUS" = "200" ] || [ "$STATUS" = "302" ] || [ "$STATUS" = "401" ]; then
-              echo "Render app is responding!"
+            BUILD_TIME=$(curl -s --connect-timeout 5 --max-time 10 \
+              https://jhipster-sample-app.onrender.com/management/info 2>/dev/null | \
+              jq -r '.build.time' 2>/dev/null | xargs -I{} date -u -d {} +%s 2>/dev/null || echo "0")
+            echo "Attempt $i: build epoch = $BUILD_TIME, workflow start = $WF_START"
+            if [ "$BUILD_TIME" -gt "$WF_START" ]; then
+              echo "Render app was built AFTER this workflow started — fresh deploy!"
               exit 0
             fi
             sleep 10
           done
-          echo "Render app did not respond after 5 minutes"
+          echo "Render app still running a build from before this push"
           exit 1
