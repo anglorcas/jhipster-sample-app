@@ -3,7 +3,7 @@
 # =========================
 FROM eclipse-temurin:17-jdk AS builder
 
-# Node.js
+# Instalar Node.js
 RUN apt-get update && apt-get install -y curl \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y curl \
 WORKDIR /app
 
 # =========================
-# Maven cache
+# Maven wrapper y config
 # =========================
 COPY pom.xml .
 COPY mvnw .
@@ -20,25 +20,20 @@ COPY .mvn .mvn
 RUN chmod +x mvnw
 
 # =========================
-# npm cache
+# npm cache layer
 # =========================
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm install
+RUN npm ci
 
 # =========================
-# Descargar deps Maven
-# =========================
-RUN ./mvnw dependency:go-offline -B
-
-# =========================
-# Copiar resto proyecto
+# Copiar resto del proyecto
 # =========================
 COPY . .
 
 # =========================
-# Build final
+# Build
 # =========================
 RUN ./mvnw package -DskipTests --batch-mode -Pprod
 
