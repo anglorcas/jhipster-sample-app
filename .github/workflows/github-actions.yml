@@ -116,6 +116,12 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
 
+      - name: Wake up Render deployment
+        run: |
+          echo "Pinging Render app to wake it up..."
+          curl -s -o /dev/null --connect-timeout 5 --max-time 10 https://jhipster-sample-app.onrender.com/ || true
+          echo "Ping sent (fire and forget). App should be waking up."
+
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@v6
         env:
@@ -255,3 +261,20 @@ jobs:
 
       - name: 'E2E: Teardown'
         run: npm run ci:e2e:teardown
+
+      - name: Verify Render deployment
+        if: always()
+        continue-on-error: true
+        run: |
+          echo "Waiting for Render app to be fully awake..."
+          for i in {1..30}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://jhipster-sample-app.onrender.com/ || echo "000")
+            echo "Attempt $i: HTTP $STATUS"
+            if [ "$STATUS" = "200" ] || [ "$STATUS" = "302" ] || [ "$STATUS" = "401" ]; then
+              echo "Render app is responding!"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Render app did not respond after 5 minutes"
+          exit 1
