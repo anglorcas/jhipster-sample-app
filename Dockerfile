@@ -25,7 +25,8 @@ RUN chmod +x mvnw
 COPY package.json .
 COPY package-lock.json .
 
-RUN npm ci
+# flexible
+RUN npm install
 
 # =========================
 # Copiar resto del proyecto
@@ -33,12 +34,12 @@ RUN npm ci
 COPY . .
 
 # =========================
-# Build
+# Build aplicación
 # =========================
 RUN ./mvnw package -DskipTests --batch-mode -Pprod
 
 # =========================
-# Runtime
+# Etapa 2: Runtime
 # =========================
 FROM eclipse-temurin:17-jre
 
