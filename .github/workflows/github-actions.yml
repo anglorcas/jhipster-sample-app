@@ -119,8 +119,8 @@ jobs:
       - name: Wake up Render deployment
         run: |
           echo "Pinging Render app to wake it up..."
-          curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://jhipster-sample-app.onrender.com/ || true
-          echo "Ping sent. App should be waking up (may take 30-60s)."
+          curl -s -o /dev/null --connect-timeout 5 --max-time 10 https://jhipster-sample-app.onrender.com/ || true
+          echo "Ping sent (fire and forget). App should be waking up."
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@v6
