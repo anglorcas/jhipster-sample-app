@@ -2,12 +2,13 @@ services:
   - type: web
     name: jhipster-sample-app
     runtime: docker
+    plan: free
     envVars:
       - key: JAVA_VERSION
         value: 17
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://dpg-d8110e7avr4c73avp100-a:5432/jhipster_db
+        value: jdbc:postgresql://dpg-d812g1mgvqtc73e1alg0-a:5432/jhipster_db_aq1w
       - key: SPRING_DATASOURCE_USERNAME
         value: jhipster_db_user
