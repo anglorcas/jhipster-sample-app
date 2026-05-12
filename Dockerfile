@@ -13,18 +13,14 @@ COPY pom.xml ./
 COPY mvnw ./
 COPY .mvn .mvn
 
-# Forzar Maven a usar solo HTTPS (evita mirrors HTTP bloqueados por Maven 3.8+)
-RUN mkdir -p /root/.m2 && \
-    echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"><mirrors><mirror><id>central-https</id><mirrorOf>central</mirrorOf><url>https://repo.maven.apache.org/maven2</url></mirror></mirrors></settings>' > /root/.m2/settings.xml
-
-# Bajar todas las dependencias Maven (capa cacheable, solo se re-ejecuta si cambia pom.xml)
-RUN chmod +x mvnw && ./mvnw dependency:go-offline -DskipTests --batch-mode
+# Bajar dependencias compilando (usa repo local para cachear entre capas)
+RUN chmod +x mvnw && ./mvnw package -DskipTests --batch-mode -Pprod -Dmaven.repo.local=/app/.m2
 
 # DESPUÉS: copiar el código fuente (cambia en cada push)
 COPY . .
 
-# Compilar el .jar (usa dependencias ya cacheadas, mucho más rápido)
-RUN ./mvnw package -DskipTests --batch-mode -Pprod
+# Compilar el .jar final (reutiliza el repo local ya poblado)
+RUN ./mvnw package -DskipTests --batch-mode -Pprod -Dmaven.repo.local=/app/.m2
 
 # Etapa 2: Imagen final (solo JRE, más ligera)
 FROM eclipse-temurin:17-jre
