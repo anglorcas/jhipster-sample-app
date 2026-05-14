@@ -1,66 +1,66 @@
-<testsuites id="" name="" tests="16" failures="0" skipped="0" errors="0" time="13.303754999999999">
-<testsuite name="createBankAccount.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.352" errors="0">
-<testcase name="test" classname="createBankAccount.spec.ts" time="2.352">
+<testsuites id="" name="" tests="16" failures="0" skipped="0" errors="0" time="23.040549">
+<testsuite name="createBankAccount.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="chromium" tests="1" failures="0" skipped="0" time="4.859" errors="0">
+<testcase name="test" classname="createBankAccount.spec.ts" time="4.859">
 </testcase>
 </testsuite>
-<testsuite name="createLabel.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.183" errors="0">
-<testcase name="test" classname="createLabel.spec.ts" time="2.183">
+<testsuite name="createLabel.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="chromium" tests="1" failures="0" skipped="0" time="4.499" errors="0">
+<testcase name="test" classname="createLabel.spec.ts" time="4.499">
 </testcase>
 </testsuite>
-<testsuite name="createOperation.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.952" errors="0">
-<testcase name="test" classname="createOperation.spec.ts" time="1.952">
+<testsuite name="createOperation.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="chromium" tests="1" failures="0" skipped="0" time="4.558" errors="0">
+<testcase name="test" classname="createOperation.spec.ts" time="4.558">
 </testcase>
 </testsuite>
-<testsuite name="createRelationsLabel.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="chromium" tests="1" failures="0" skipped="0" time="3.759" errors="0">
-<testcase name="test" classname="createRelationsLabel.spec.ts" time="3.759">
+<testsuite name="createRelationsLabel.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="chromium" tests="1" failures="0" skipped="0" time="6.669" errors="0">
+<testcase name="test" classname="createRelationsLabel.spec.ts" time="6.669">
 </testcase>
 </testsuite>
-<testsuite name="login.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.309" errors="0">
-<testcase name="test" classname="login.spec.ts" time="1.309">
+<testsuite name="login.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.475" errors="0">
+<testcase name="test" classname="login.spec.ts" time="1.475">
 </testcase>
 </testsuite>
-<testsuite name="viewBankAccount.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.646" errors="0">
-<testcase name="test" classname="viewBankAccount.spec.ts" time="1.646">
+<testsuite name="viewBankAccount.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="chromium" tests="1" failures="0" skipped="0" time="2.065" errors="0">
+<testcase name="test" classname="viewBankAccount.spec.ts" time="2.065">
 </testcase>
 </testsuite>
-<testsuite name="viewLabel.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.658" errors="0">
-<testcase name="test" classname="viewLabel.spec.ts" time="1.658">
+<testsuite name="viewLabel.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.911" errors="0">
+<testcase name="test" classname="viewLabel.spec.ts" time="1.911">
 </testcase>
 </testsuite>
-<testsuite name="viewOperation.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.326" errors="0">
-<testcase name="test" classname="viewOperation.spec.ts" time="1.326">
+<testsuite name="viewOperation.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.33" errors="0">
+<testcase name="test" classname="viewOperation.spec.ts" time="1.33">
 </testcase>
 </testsuite>
-<testsuite name="createBankAccount.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="firefox" tests="1" failures="0" skipped="0" time="3.143" errors="0">
-<testcase name="test" classname="createBankAccount.spec.ts" time="3.143">
+<testsuite name="createBankAccount.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="firefox" tests="1" failures="0" skipped="0" time="4.392" errors="0">
+<testcase name="test" classname="createBankAccount.spec.ts" time="4.392">
 </testcase>
 </testsuite>
-<testsuite name="createLabel.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="firefox" tests="1" failures="0" skipped="0" time="3.279" errors="0">
-<testcase name="test" classname="createLabel.spec.ts" time="3.279">
+<testsuite name="createLabel.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="firefox" tests="1" failures="0" skipped="0" time="3.701" errors="0">
+<testcase name="test" classname="createLabel.spec.ts" time="3.701">
 </testcase>
 </testsuite>
-<testsuite name="createOperation.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="firefox" tests="1" failures="0" skipped="0" time="3.303" errors="0">
-<testcase name="test" classname="createOperation.spec.ts" time="3.303">
+<testsuite name="createOperation.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="firefox" tests="1" failures="0" skipped="0" time="4.235" errors="0">
+<testcase name="test" classname="createOperation.spec.ts" time="4.235">
 </testcase>
 </testsuite>
-<testsuite name="createRelationsLabel.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="firefox" tests="1" failures="0" skipped="0" time="5.418" errors="0">
-<testcase name="test" classname="createRelationsLabel.spec.ts" time="5.418">
+<testsuite name="createRelationsLabel.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="firefox" tests="1" failures="0" skipped="0" time="6.746" errors="0">
+<testcase name="test" classname="createRelationsLabel.spec.ts" time="6.746">
 </testcase>
 </testsuite>
-<testsuite name="login.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.636" errors="0">
-<testcase name="test" classname="login.spec.ts" time="1.636">
+<testsuite name="login.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.833" errors="0">
+<testcase name="test" classname="login.spec.ts" time="1.833">
 </testcase>
 </testsuite>
-<testsuite name="viewBankAccount.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.073" errors="0">
-<testcase name="test" classname="viewBankAccount.spec.ts" time="2.073">
+<testsuite name="viewBankAccount.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.39" errors="0">
+<testcase name="test" classname="viewBankAccount.spec.ts" time="2.39">
 </testcase>
 </testsuite>
-<testsuite name="viewLabel.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.994" errors="0">
-<testcase name="test" classname="viewLabel.spec.ts" time="1.994">
+<testsuite name="viewLabel.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="firefox" tests="1" failures="0" skipped="0" time="2.28" errors="0">
+<testcase name="test" classname="viewLabel.spec.ts" time="2.28">
 </testcase>
 </testsuite>
-<testsuite name="viewOperation.spec.ts" timestamp="2026-03-12T15:06:14.243Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.763" errors="0">
-<testcase name="test" classname="viewOperation.spec.ts" time="1.763">
+<testsuite name="viewOperation.spec.ts" timestamp="2026-05-02T09:15:10.753Z" hostname="firefox" tests="1" failures="0" skipped="0" time="1.931" errors="0">
+<testcase name="test" classname="viewOperation.spec.ts" time="1.931">
 </testcase>
 </testsuite>
 </testsuites>

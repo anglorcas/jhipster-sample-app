@@ -32,6 +32,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Record workflow start time
+        run: echo "WF_START=$(date -u +%s)" >> $GITHUB_ENV
+        
       - name: Install Docker Compose
         run: |
           sudo apt-get update
@@ -82,15 +85,16 @@ jobs:
 
       - name: Collect Test Metrics
         run: |
-          BACKEND_TESTS_FAILED=${{ steps.backend_test.outcome == 'failure' && 1 || 0 }}
-          FRONTEND_TESTS_FAILED=${{ steps.frontend_test.outcome == 'failure' && 1 || 0 }}
+          # Generate Prometheus metrics directly from XML reports
+          python3 scripts/count_tests.py > metrics.prom
 
-          TOTAL_TESTS=481
-          TOTAL_FAILED=$((BACKEND_TESTS_FAILED + FRONTEND_TESTS_FAILED))
-          TOTAL_SUCCEEDED=$((TOTAL_TESTS - TOTAL_FAILED))
+          # Extra CI metrics
+          JAVA_FILES_CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null | grep "\.java$" | wc -l || echo 0)
 
-          echo "tests_failed $TOTAL_FAILED" > metrics.prom
-          echo "tests_succeeded $TOTAL_SUCCEEDED" >> metrics.prom
+          echo "java_files_changed $JAVA_FILES_CHANGED" >> metrics.prom
+
+          echo "Generated metrics:"
+          cat metrics.prom
 
       - name: Push Test Metrics to Prometheus Pushgateway
         run: |
@@ -99,6 +103,7 @@ jobs:
 
           curl -v ${PUSHGATEWAY_URL}
           curl -v --data-binary @metrics.prom ${PUSHGATEWAY_URL}/metrics/job/github_actions
+
 
           echo "chapter_35_metric $(date +%s)" | curl -v --data-binary @- ${PUSHGATEWAY_URL}/metrics/job/chapter35
 
@@ -113,6 +118,13 @@ jobs:
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+
+      - name: Wake up Render deployment
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Pinging Render app to wake it up..."
+          curl -s -o /dev/null --connect-timeout 5 --max-time 10 https://jhipster-sample-app.onrender.com/ || true
+          echo "Ping sent (fire and forget). App should be waking up."
 
       - name: SonarCloud Scan
         uses: sonarsource/sonarqube-scan-action@v6
@@ -143,11 +155,12 @@ jobs:
       - name: 'E2E: Run (Playwright)'
         run: |
           echo "Starting backend JAR in background..."
-          # Start backend in prod mode
+          # Start backend
           java -jar target/*.jar &
-
-          # Save PID so we can kill it later
           BACKEND_PID=$!
+
+          # Ensure backend is killed even if something fails
+          trap "echo 'Stopping backend...'; kill $BACKEND_PID" EXIT SIGINT SIGTERM
 
           # Wait until backend is ready (retry loop)
           echo "Waiting for backend to be ready on http://localhost:8080 ..."
@@ -163,9 +176,11 @@ jobs:
           # Run Playwright tests
           npx playwright test --config=src/test/javascript/playwright/playwright.config.ts
 
-          # Kill the backend process
-          echo "Stopping backend..."
-          kill $BACKEND_PID
+          # Push app metrics after Playwright
+          echo "Pushing JHipster app metrics after Playwright..."
+          curl -fsS http://localhost:8080/management/prometheus | \
+            curl -fsS --data-binary @- \
+            ${PUSHGATEWAY_URL}/metrics/job/jhipster_app/phase/playwright
 
       - name: Upload Playwright Report
         if: always()
@@ -174,5 +189,98 @@ jobs:
           name: playwright-report
           path: src/test/javascript/playwright/playwright-report
 
+      - name: Run JMeter Performance Tests
+        run: |
+          echo "Starting backend for JMeter..."
+
+          # Start backend
+          java -jar target/*.jar &
+          BACKEND_PID=$!
+
+          # Ensure backend is killed even if something fails
+          trap "echo 'Stopping backend...'; kill $BACKEND_PID" EXIT SIGINT SIGTERM
+
+          # Wait until backend is ready
+          echo "Waiting for backend on http://localhost:8080 ..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/ >/dev/null; then
+              echo "Backend is up!"
+              break
+            fi
+            echo "Waiting 2s..."
+            sleep 2
+          done
+
+          # Run JMeter via Maven wrapper
+          echo "Running JMeter tests..."
+          chmod +x mvnw
+          ./mvnw jmeter:jmeter
+
+
+          # Push app metrics after JMeter — JVM tras 50k peticiones, el más interesante
+          echo "Pushing JHipster app metrics after JMeter..."
+          curl -fsS http://localhost:8080/management/prometheus | \
+            curl -fsS --data-binary @- \
+            ${PUSHGATEWAY_URL}/metrics/job/jhipster_app/phase/jmeter
+
+      - name: Upload JMeter Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-results
+          path: target/jmeter/
+
+      - name: Run Cucumber Tests
+        run: |
+          echo "Starting backend for Cucumber..."
+
+          # Start backend
+          java -jar target/*.jar &
+          BACKEND_PID=$!
+
+          # Ensure backend is killed even if something fails
+          trap "echo 'Stopping backend...'; kill $BACKEND_PID" EXIT SIGINT SIGTERM
+
+          # Wait until backend is ready
+          echo "Waiting for backend on http://localhost:8080 ..."
+          for i in {1..30}; do
+            if curl -s http://localhost:8080/ >/dev/null; then
+              echo "Backend is up!"
+              break
+            fi
+            echo "Waiting 2s..."
+            sleep 2
+          done
+
+          # Run Cucumber via Maven wrapper junit
+          echo "Running Cucumber tests..."
+          chmod +x mvnw
+          ./mvnw surefire:test -Dtest=CucumberTest -Dmaven.test.skip=false -DskipCompile=true
+
+          # Push app metrics after Cucumber — JVM tras escenarios BDD
+          echo "Pushing JHipster app metrics after Cucumber..."
+          curl -fsS http://localhost:8080/management/prometheus | \
+            curl -fsS --data-binary @- \
+            ${PUSHGATEWAY_URL}/metrics/job/jhipster_app/phase/cucumber
+
       - name: 'E2E: Teardown'
         run: npm run ci:e2e:teardown
+
+      - name: Verify Render deployment
+        if: github.ref == 'refs/heads/main' && always()
+        continue-on-error: true
+        run: |
+          echo "Waiting for Render to deploy a build newer than workflow start ($WF_START)..."
+          for i in {1..30}; do
+            BUILD_TIME=$(curl -s --connect-timeout 5 --max-time 10 \
+              https://jhipster-sample-app.onrender.com/management/info 2>/dev/null | \
+              jq -r '.build.time' 2>/dev/null | xargs -I{} date -u -d {} +%s 2>/dev/null || echo "0")
+            echo "Attempt $i: build epoch = $BUILD_TIME, workflow start = $WF_START"
+            if [ "$BUILD_TIME" -gt "$WF_START" ]; then
+              echo "Render app was built AFTER this workflow started — fresh deploy!"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Render app still running a build from before this push"
+          exit 1
