@@ -19,8 +19,8 @@ logging:
     tech.jhipster: INFO
     io.github.jhipster.sample: INFO
 
-  file:
-    name: logs/app.log
+#  file:
+#    name: logs/app.log
 
 management:
   prometheus:
@@ -28,16 +28,16 @@ management:
       export:
         enabled: true
 
-  endpoints:
-    web:
-      base-path: /management
-      exposure:
-        include: health,info,prometheus,logfile,loggers
+#  endpoints:
+#    web:
+#      base-path: /management
+#      exposure:
+#        include: health,info,prometheus,logfile,loggers
 
-  endpoint:
-    logfile:
-      external-file: logs/app.log
-      enabled: true
+#  endpoint:
+#    logfile:
+#      external-file: logs/app.log
+#      enabled: true
 
 spring:
   devtools:
