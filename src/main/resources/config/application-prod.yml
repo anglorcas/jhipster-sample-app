@@ -28,16 +28,15 @@ management:
       export:
         enabled: true
 
-#  endpoints:
-#    web:
-#      base-path: /management
-#      exposure:
-#        include: health,info,prometheus,logfile,loggers
+  #  endpoints:
+  #    web:
+  #      exposure:
+  #        include: health,info,prometheus,logfile,loggers,configprops,env
 
-#  endpoint:
-#    logfile:
-#      external-file: logs/app.log
-#      enabled: true
+  endpoint:
+    logfile:
+      external-file: logs/app.log
+      enabled: true
 
 spring:
   devtools:
