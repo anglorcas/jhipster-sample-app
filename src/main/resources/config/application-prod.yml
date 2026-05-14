@@ -19,8 +19,8 @@ logging:
     tech.jhipster: INFO
     io.github.jhipster.sample: INFO
 
-#  file:
-#    name: logs/app.log
+  file:
+    name: logs/app.log
 
 management:
   prometheus:

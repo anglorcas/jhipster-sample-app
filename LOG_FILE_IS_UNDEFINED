@@ -1,0 +1,40 @@
+2026-05-14T22:14:56.321+02:00  INFO 468015 --- [jhipsterSampleApplication] [main] i.g.j.s.JhipsterSampleApplicationApp     : Starting JhipsterSampleApplicationApp v0.0.1-SNAPSHOT using Java 17.0.18 with PID 468015 (/home/angel365/TFG/jhipster-sample-app/target/e2e.jar started by angel365 in /home/angel365/TFG/jhipster-sample-app)
+2026-05-14T22:14:56.323+02:00  INFO 468015 --- [jhipsterSampleApplication] [main] i.g.j.s.JhipsterSampleApplicationApp     : The following 2 profiles are active: "e2e", "prod"
+2026-05-14T22:14:57.815+02:00  INFO 468015 --- [jhipsterSampleApplication] [main] i.g.j.sample.config.WebConfigurer        : Web application configuration, using profiles: e2e
+2026-05-14T22:14:57.816+02:00  INFO 468015 --- [jhipsterSampleApplication] [main] i.g.j.sample.config.WebConfigurer        : Web application fully configured
+2026-05-14T22:15:04.645+02:00  WARN 468015 --- [jhipsterSampleApplication] [main] t.j.c.liquibase.AsyncSpringLiquibase     : Warning, Liquibase took more than 5 seconds to start up!
+2026-05-14T22:15:05.109+02:00  WARN 468015 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:15:05.256+02:00  WARN 468015 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:15:05.257+02:00  WARN 468015 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:15:05.257+02:00  WARN 468015 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:15:05.259+02:00  WARN 468015 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:15:05.292+02:00  WARN 468015 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:15:07.285+02:00  INFO 468015 --- [jhipsterSampleApplication] [main] org.jboss.threads                        : JBoss Threads version 3.5.0.Final
+2026-05-14T22:15:07.341+02:00  INFO 468015 --- [jhipsterSampleApplication] [main] i.g.j.s.JhipsterSampleApplicationApp     : Started JhipsterSampleApplicationApp in 11.441 seconds (process running for 11.707)
+2026-05-14T22:15:07.345+02:00  INFO 468015 --- [jhipsterSampleApplication] [main] i.g.j.s.JhipsterSampleApplicationApp     : 
+----------------------------------------------------------
+	Application 'jhipsterSampleApplication' is running! Access URLs:
+	Local: 		http://localhost:8080/
+	External: 	http://127.0.1.1:8080/
+	Profile(s): 	[e2e, prod]
+----------------------------------------------------------
+2026-05-14T22:19:38.136+02:00  INFO 476633 --- [jhipsterSampleApplication] [main] i.g.j.s.JhipsterSampleApplicationApp     : Starting JhipsterSampleApplicationApp v0.0.1-SNAPSHOT using Java 17.0.18 with PID 476633 (/home/angel365/TFG/jhipster-sample-app/target/e2e.jar started by angel365 in /home/angel365/TFG/jhipster-sample-app)
+2026-05-14T22:19:38.138+02:00  INFO 476633 --- [jhipsterSampleApplication] [main] i.g.j.s.JhipsterSampleApplicationApp     : The following 2 profiles are active: "e2e", "prod"
+2026-05-14T22:19:39.722+02:00  INFO 476633 --- [jhipsterSampleApplication] [main] i.g.j.sample.config.WebConfigurer        : Web application configuration, using profiles: e2e
+2026-05-14T22:19:39.723+02:00  INFO 476633 --- [jhipsterSampleApplication] [main] i.g.j.sample.config.WebConfigurer        : Web application fully configured
+2026-05-14T22:19:46.574+02:00  WARN 476633 --- [jhipsterSampleApplication] [main] t.j.c.liquibase.AsyncSpringLiquibase     : Warning, Liquibase took more than 5 seconds to start up!
+2026-05-14T22:19:47.108+02:00  WARN 476633 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:19:47.266+02:00  WARN 476633 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:19:47.267+02:00  WARN 476633 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:19:47.267+02:00  WARN 476633 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:19:47.268+02:00  WARN 476633 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:19:47.302+02:00  WARN 476633 --- [jhipsterSampleApplication] [main] org.hibernate.orm.incubating             : HHH90006001: Encountered incubating setting [hibernate.type.preferred_instant_jdbc_type].  See javadoc on corresponding `org.hibernate.cfg.AvailableSettings` constant for details.
+2026-05-14T22:19:49.369+02:00  INFO 476633 --- [jhipsterSampleApplication] [main] org.jboss.threads                        : JBoss Threads version 3.5.0.Final
+2026-05-14T22:19:49.408+02:00  INFO 476633 --- [jhipsterSampleApplication] [main] i.g.j.s.JhipsterSampleApplicationApp     : Started JhipsterSampleApplicationApp in 11.721 seconds (process running for 12.035)
+2026-05-14T22:19:49.416+02:00  INFO 476633 --- [jhipsterSampleApplication] [main] i.g.j.s.JhipsterSampleApplicationApp     : 
+----------------------------------------------------------
+	Application 'jhipsterSampleApplication' is running! Access URLs:
+	Local: 		http://localhost:8080/
+	External: 	http://127.0.1.1:8080/
+	Profile(s): 	[e2e, prod]
+----------------------------------------------------------
