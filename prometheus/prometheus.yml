@@ -19,3 +19,22 @@ scrape_configs:
   - job_name: 'github_actions_metrics'
     static_configs:
       - targets: ['github_actions_exporter:9999'] # Reemplazar con tu endpoint o exporter
+
+  #App Local
+  - job_name: 'spring_app_local'
+    metrics_path: /management/prometheus
+    static_configs:
+      - targets: ['host.docker.internal:8080']
+    relabel_configs:
+      - target_label: phase
+        replacement: 'local'
+
+  #App Render
+  - job_name: 'spring_app_render'
+    metrics_path: /management/prometheus
+    scheme: https
+    static_configs:
+      - targets: ['jhipster-sample-app.onrender.com']
+    relabel_configs:
+      - target_label: phase
+        replacement: 'render'
