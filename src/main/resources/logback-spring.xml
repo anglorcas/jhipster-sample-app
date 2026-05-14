@@ -14,14 +14,19 @@
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 
     <!-- The FILE and ASYNC appenders are here as examples for a production configuration -->
-    <!--
+    <springProperty scope="context"
+                name="LOG_FILE"
+                source="logging.file.name"/>
+
+
     <include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+
 
     <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
         <queueSize>512</queueSize>
         <appender-ref ref="FILE"/>
     </appender>
-
+    <!--
     <root level="${logging.level.root}">
         <appender-ref ref="ASYNC"/>
     </root>
@@ -69,7 +74,8 @@
 
     <springProperty name="log.level" source="logging.level.root" defaultValue="INFO" />
     <root level="${log.level}">
-        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="ASYNC"/>
     </root>
 
     <!-- Prevent logback from outputting its own status -->
