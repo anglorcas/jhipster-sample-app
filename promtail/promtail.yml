@@ -1,0 +1,30 @@
+server:
+  http_listen_port: 9080
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # LOG LOCAL SPRING BOOT
+  - job_name: spring_local
+    static_configs:
+      - targets: [localhost]
+        labels:
+          job: spring_local
+          app: jhipster
+          phase: log_local
+          __path__: /host/logs/app.log
+
+  # LOG REMOTO (RENDER VIA SCRIPT)
+  - job_name: spring_render
+    static_configs:
+      - targets: [localhost]
+        labels:
+          job: spring_render
+          app: jhipster
+          phase: log_render
+          source: render
+          __path__: /host/logs/render.log

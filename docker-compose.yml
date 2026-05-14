@@ -49,5 +49,26 @@ services:
       - '9091:9091'
     restart: always
 
+  # LOGS STACK
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    expose:
+      - 3100
+    ports:
+      - '3100:3100'
+    volumes:
+      - ./loki/loki.yml:/etc/loki/loki.yml
+    command: -config.file=/etc/loki/loki.yml
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - ./:/host:ro
+      - ./promtail/promtail.yml:/etc/promtail/config.yml
+      - ./logs:/host/logs
+    command: -config.file=/etc/promtail/config.yml
+
 volumes:
   grafana_data:
